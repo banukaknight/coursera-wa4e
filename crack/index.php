@@ -29,9 +29,8 @@ if ( isset($_GET['md5']) ) {
 				$ch3 = $txt[$m];  // Our 3rd num
 				for($n=0; $n<strlen($txt); $n++ ) {
 					$ch4 = $txt[$n];  // Our 4th num
-
 //------------------
-					// Concatenate the two characters together to 
+					// Concatenate the four characters together to 
 					// form the "possible" pre-hash text
 					$try = $ch1.$ch2.$ch3.$ch4;
 					$count1 = $count1 + 1; //count checks
@@ -39,7 +38,7 @@ if ( isset($_GET['md5']) ) {
 					$check = hash('md5', $try);
 					if ( $check == $md5 ) {
 						$goodtext = $try;
-						break;   // Exit the inner loop
+						break 4;   // Exit the inner loop
 					}
 
 					// Debug output until $show hits 0
@@ -72,7 +71,6 @@ if ( isset($_GET['md5']) ) {
 <ul>
 <li><a href="index.php">Reset</a></li>
 <li><a href="md5.php">MD5 Encoder</a></li>
-<li><a href="makecode.php">MD5 Code Maker</a></li>
 <li><a
 href="https://github.com/csev/wa4e/tree/master/code/crack"
 target="_blank">Source code for this application</a></li>
