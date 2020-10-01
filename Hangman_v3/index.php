@@ -1,43 +1,46 @@
-
 <html>
 <head>
-	<title>Hangman by Banuka</title>
-	<style>
-body {
-  background-color: linen;
-}
+    <title>Hangman by Banuka</title>
+    <style>
+        body {
+            background-color: linen;
+        }
+        h2 {
+            color: maroon;
+        }
+        td {
+            padding: 10px;
+        }
+        img {
+            border-radius: 25px;
+            border: 3px solid yellow;
+        }
 
-h2 {
-  color: maroon;
-}
-td {
-	padding: 10px;
-}
-img {
-	border-radius: 25px;
-	border: 3px solid yellow;
-}
+        input[type=button],
+        input[type=submit],
+        input[type=reset] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 32px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
-input[type=button], input[type=submit], input[type=reset] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 6px 32px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 5px;
-}
+        input[type="submit"]:disabled {
+            background: #dddddd;
+        }
 
-input[type="submit"]:disabled {
-  background: #dddddd;
-}
-	
-</style>
-	</head>
-	<body>
+    </style>
+</head>
 
-<div style="padding:50px; background-image:url('./hang/bg.jpg');">
-<h1><center><a href="https://banukaknight.github.io/">
-Welcome to Hangman Game by Banuka</a></center></h1>
+<body>
+
+    <div style="padding:50px; background-image:url('./hang/bg.jpg');">
+        <h1>
+            <center><a href="https://banukaknight.github.io/">
+                    Welcome to Hangman Game by Banuka</a></center>
+        </h1>
 
 <?
 
@@ -61,6 +64,7 @@ function loadWords() {
   $numwords = 0;
   $fname = "./words.txt";
 
+	//the project folder includes a text file called word.txt containg 50 phrases to be used for the game. if the files is not found, program would use an array stored within the php file to chose a phrase for the game.
   if (file_exists($fname)) {
 	  $fhandle = fopen($fname, "r");
 
@@ -85,7 +89,7 @@ function loadWords() {
   setcookie("guessed_c", "", time() - 3600); #delete old guesses
 }
 
-
+//obscurePhrase function would take prase to guess, letters guessed so far by user and the ALHPABET letters and create an obscured phrase where any guessed letters are filled and rest are represented by underscore _
 function obscurePhrase(){
 	global $phrase_s;
 	global $guessed_s;
@@ -120,9 +124,10 @@ function obscurePhrase(){
 		$page = $_SERVER['PHP_SELF'];
 		header("Refresh: 5; url=$page"); #refresh after 4 sec
 	}
-
 }
 
+//getHangman checks for number of wrong guesses are made by player so far and display hangman's image accordingly
+//if player has guessed all letters, GAME WON is displayed. If player made 6 wrong guesses, game LOST is displayed. Then game restart with new phrase automatically.
 function getHangman(){
 	global $phrase_s;
 	global $guessed_s;
@@ -139,24 +144,24 @@ function getHangman(){
 
 	if($hangcount<6){
 		echo "<td><img src=\"./hang/$hangcount.png\" alt=\"Got $hangcount letters wrong\" ></td><td>";
+		obscurePhrase(); #call function to display obscured phrase
 	}else{
 		echo "<td><img src=\"./hang/6gif.gif\" alt=\"Got $hangcount letters wrong\"><td><td>";
 		echo "<h1>You LOST! ...Loading new game...</h1>";
 		echo "<h2>Phrase was: $phrase_s</h2>";
-		loadWords();
+		obscurePhrase(); #call function to display obscured phrase
+		loadWords(); #call function to pic new phrase for new game
 		$page = $_SERVER['PHP_SELF'];
 		header("Refresh: 8; url=$page"); #refresh after few sec
 	}
-
 }
 
 ?>
 
-
-<form method="POST">
-<input type="submit" name="Startgame" value="START NEW GAME">
-<i>Select Letter to guess:</i>
-</form>
+        <form method="POST">
+            <input type="submit" name="Startgame" value="START NEW GAME">
+            <i>Select Letter to guess:</i>
+        </form>
 
 <?
 if ( isset($_POST['Startgame']) ) {
@@ -167,7 +172,7 @@ if ( isset($_POST['Startgame']) ) {
 }
 ?>
 
-<form method="POST" action="">
+        <form method="POST" action="">
 <?
 $ALPHABET_a = str_split($ALPHABET);
 
@@ -178,12 +183,12 @@ foreach($ALPHABET_a as $i){
 	if($i == 'M'){echo "<br>";}
 }
 ?>
-</form>
+        </form>
 
 
-<table>
+        <table>
 
-<?
+            <?
 if (isset($_POST['action'])){
 	
 	global $guessed_s;
@@ -207,13 +212,16 @@ if (isset($_POST['action'])){
 }
 
 getHangman(); #display hangman
-obscurePhrase(); #display obscured phrase
+#obscurePhrase(); #display obscured phrase
 
 ?>
 
-</td></tr></table>
-<br>
-<marquee><a href="https://www.linkedin.com/in/banuka/">Thank you for playing!</a></marquee>
-</div>
+            </td>
+            </tr>
+        </table>
+        <br>
+        <marquee><a href="https://www.linkedin.com/in/banuka/">Thank you for playing!</a></marquee>
+    </div>
 </body>
+
 </html>
